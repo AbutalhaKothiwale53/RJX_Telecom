@@ -1,0 +1,39 @@
+{
+	"plans": [
+		{
+			"id": 1001,
+			"planValue": 499,
+			"calls": 'yes',
+			"data": 85,
+			"addOns": "Amazon Prime, 3G/4G data with Rollover, Local/STD Roaming calls unliminited",
+		},
+		{
+			"id": 1002,
+			"planValue": 749,
+			"calls": 'yes',
+			"data": 120,
+			"addOns": "Amazon Prime, 3G/4G data with Rollover, Local/STD Roaming calls unliminited, 2 free family addOns sims",
+		},
+		{
+			"id": 1003,
+			"planValue": 999,
+			"calls": 'yes',
+			"data": 170,
+			"addOns": "Amazon Prime, 3G/4G data with Rollover, Local/STD Roaming calls unliminited, 4 free family addOns sims+1 data",
+		},
+		{
+			"id": 1004,
+			"planValue": 497,
+			"calls": 'yes',
+			"data": 75,
+			"addOns": "Amazon Prime, 3G/4G data with Rollover, Local/STD Roaming calls unliminited",
+		},
+		{
+			"id": 105,
+			"planValue": 499,
+			"calls": 'yes',
+			"data": 85,
+			"addOns": "Amazon Prime, 3G/4G data with Rollover, Local/STD Roaming calls unliminited",
+		},
+	]
+}

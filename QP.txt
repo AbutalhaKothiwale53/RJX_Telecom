@@ -1,0 +1,31 @@
+1. configure the routes with the below info
+path: 		Component
+/	-	 	AddPlan
+/addPlan- 	AddPlan
+/viewPlan- 	ViewPlan
+
+2. AddPlan
+The react application - Telecom is running on the localhost port 3000. when the "http://localhost:3000" is entered in the browser. AddPlan component should be shown
+ToDO: below react form validation should be added in the addPlan component
+
+Name of the Form Field -Validations to be done
+planValue				1. Required validation 2. Value should not be less than 200
+Data					2. Required validation 2. Dta should not be less than 20GB
+unlimitedCalls			1. Required validation
+addOns					1. Required validation
+
+ToDO: Invalid input error message and Valid/ success message
+Plan Value: Message: Plan value cannot be less than 200
+Data:		Data should be 20GB or more
+
+* On successful submission, the success message should be displayed as shown below (below Add Plan button)
+Plan Created successfully with id 1001
+* In case of any error in submission, error message should be as shown below
+Something went wrong
+
+3. View Plan
+ToDo: when clicked on 'View Plan' link on the Home Page, all the details should be fetched and displayed
+ToDo: 
+* On click of 'Delete' button from the above view, the corresponding plan details should be from the database.
+* After the successful deletion, "success mesage" should be displayed along with the available plan cards.
+* if there is any error in deleting the plan cards, then error message should be displayed.
