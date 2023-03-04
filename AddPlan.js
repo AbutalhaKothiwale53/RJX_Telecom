@@ -46,10 +46,12 @@ export default function AddPlan() {
 		switch(name) {
 			case "planValue":
 			break;
-		case "data"":
-		break;
-		default:
-		break;  
+
+            case "data":
+            break;
+
+            default:
+            break;  
 		}
 		//if the value of all the properties of the formErrors are qual to "", 
 		//set value of valid state to true, else se it to false
@@ -62,18 +64,18 @@ export default function AddPlan() {
 			<div className="col-md-6 offset-md-3">
 				<div className="card">
 					<div>
-						<h6>Create a new Plan</h6>
+						<h3>Create a new Plan</h3>
 					</div>
 					<div>
 						<form onSubmit={submit}>
 							<div className="form-group">
-								<label htmlFor="">Plan Value</label>
+								<label htmlFor="">Plan Value</label> &nbsp;&nbsp;
 								<input type="number" name="planValue" value={minVal}
 								onChange={handleChange} className='form-control'/>
 								<span></span>
 							</div>
 							<div className='form-group'>
-								<label htmlFor="">Data (GB/Month)</label>
+								<label htmlFor="">Data (GB/Month)</label> &nbsp;&nbsp;
 								<input type="number" className='form-control'
 								name='data'
 								value={minData}
@@ -81,35 +83,25 @@ export default function AddPlan() {
 								/>
 								<span></span>								
 							</div>
-							<div className=form-group>
-								<label htmlFor="">Unlimited Calls</label>
+							<div className='form-group'>
+								<label htmlFor="">Unlimited Calls</label> &nbsp;&nbsp;
 								<div className='form-check form-check-inline'>
 								<label htmlFor="">Yes</label>
-								<input type="radio" name="calls" id="yes" onChange={handleChange} className='form-control'>
+								<input type="radio" name="calls" id="yes" onChange={handleChange} className='form-control' />
 								</div>
 								<div className='form-check form-check-inline'>
 								<label htmlFor="">No</label>
-								<input type="radio" name="calls" id="no" onChange={handleChange} className='form-control'>
+								<input type="radio" name="calls" id="no" onChange={handleChange} className='form-control' />
 								</div>
 							</div>
 							<div className='form-group'>
-								<labe>Add-Ons</labe>
+								<labe>Add-Ons</labe> &nbsp;&nbsp;
 								<textarea name="addOns" cols="83" className='form-controlm' onChange={handleChange} />
 							</div>
 							<div className='form-groupm'>
-							<!--bind the disabled attributes of the button to the value of 'valid' state-->
-							<button type='submit'className='btn btn-primary'
-							style={{
-								backgroundColor: "rgba(0, 33, 65",
-								border: "rgba(0, 33, 65)",
-								fontSize: "15px"  
-							}}
-							>
-							Add Plan
-							</button>
+							{/* <!--bind the disabled attributes of the button to the value of 'valid' state--> */}
+							<button type='submit' className='btn btn-primary'> Add Plan </button>
 							</div>
-
-
 						</form>
 					</div>	
 					<div className='text-danger'></div>
