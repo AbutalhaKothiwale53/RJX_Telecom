@@ -1,115 +1,161 @@
-import React, {useState} from 'react';
-import axiox from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Button, Form } from "react-bootstrap";
+import TeleTalk from './TeleTalk.css';
 
-const url = "http://localhost:4000/plans";
+const URL = "http://localhost:1200/plans";
 
-export default function AddPlan() {
-	const [planData, setPlanData] = useState({
-		planValue: '',
-		data: '',
-		calls: '',
-		addOns: ''   
-	});
-	const [formsErros, setFormsErrors] = useState({planValue: '', data: ''});
+const AddPlan = () => {
+  const [planData, setPlanData] = useState({
+    planValue: "",
+    data: "",
+    calls: "",
+    addOns: "",
+  });
+  const [formsErros, setFormsErrors] = useState({planValue: '', data: ''});
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [mandatory, setMandatory] = useState(false);
 	const [valid, setValid] = useState(true);
 	const [minVal, setMinVal] = useState(200);
 	const [minData, setMinData] = useState(20);
-
-	const [message] = useState({
+  const [message] = useState({
 		"MANDATORY": "Enter all the forms fields",
 		"ERROR": "Something went wrong",
 		"PLANVALUE_ERROR": "Plan value cannot be less than 200",
 		"DATA_ERROR": "Data should be 20GB or more",
 	});
 
-	const submit = (e) => {
-		e.preventDefault();
-		/*
-		if any of the fields in the form is empty, set mandatory to true
-		else set it to false and add the new plan details to the db
-		if the plan details are added succesfully, set the appropriate message
-		 "Plan created succesfully with ID <Plan Id>"
-		 else set the error message "Something went wrong"
-		*/
-	};
+  function submit(e) {
+    e.preventDefault();
+    // if(!planData.planValue || !planData.data || !planData.calls || !planData.addOns){
+    //   setMandatory(true);
+    // }
+    if(planData.planValue === "" || planData.data === "" || planData.calls === "" || planData.addOns === ""){
+      setMandatory(message.MANDATORY);
+      setValid(valid);
+    }else{
+      setErrorMessage("");
+      setValid(false);
+      let newPlans = {
+        planValue: planData.planValue,
+        data: planData.data,
+        calls: planData.calls,
+        addOns: planData.addOns
+      }
+      axios.post(URL, newPlans)
+      .then((res) => {
+        setPlanData([...planData, res.data]);
+        setSuccessMessage(`New Plan has been added with the id ${res.data.id} `);
+        setPlanData("");
+        console.log('=>', planData)
+      })
+      .catch((err) => {
+        setErrorMessage(err.message);
+      })
+    }
+  }
 
-	function handleChange(e) {
-		setSuccessMessage("");
+  function handleChange(e) {
+    setSuccessMessage("");
 		setErrorMessage("");
 		setMandatory("");
-		let { name, value } = e.target;
+    let { name, value } = e.target;
+    setPlanData({ ...planData, [name]: value });
 
-		//set the details state
+    //set the details state
 		switch(name) {
 			case "planValue":
+        setMinVal(value);
+        if(minVal > 200){
+          setValid(true);
+          setPlanData(value);
+        }else{
+          setErrorMessage(message.PLANVALUE_ERROR);
+        }
 			break;
 
-            case "data":
-            break;
+      case "data":
+        setMinData(value);
+        if(minData > 20){
+          setValid(true);
+          setPlanData(value);
+        }else{
+          setErrorMessage(message.DATA_ERROR);
+        }
+      break;
 
-            default:
-            break;  
+      default:
+      break;  
 		}
-		//if the value of all the properties of the formErrors are qual to "", 
-		//set value of valid state to true, else se it to false
-		
-	};
+  }
 
-	return <React.Fragment>
-	<div>
-		<div className="row">
-			<div className="col-md-6 offset-md-3">
-				<div className="card">
-					<div>
-						<h3>Create a new Plan</h3>
-					</div>
-					<div>
-						<form onSubmit={submit}>
-							<div className="form-group">
-								<label htmlFor="">Plan Value</label> &nbsp;&nbsp;
-								<input type="number" name="planValue" value={minVal}
-								onChange={handleChange} className='form-control'/>
-								<span></span>
-							</div>
-							<div className='form-group'>
-								<label htmlFor="">Data (GB/Month)</label> &nbsp;&nbsp;
-								<input type="number" className='form-control'
-								name='data'
-								value={minData}
-								onChange={handleChange}
-								/>
-								<span></span>								
-							</div>
-							<div className='form-group'>
-								<label htmlFor="">Unlimited Calls</label> &nbsp;&nbsp;
-								<div className='form-check form-check-inline'>
-								<label htmlFor="">Yes</label>
-								<input type="radio" name="calls" id="yes" onChange={handleChange} className='form-control' />
-								</div>
-								<div className='form-check form-check-inline'>
-								<label htmlFor="">No</label>
-								<input type="radio" name="calls" id="no" onChange={handleChange} className='form-control' />
-								</div>
-							</div>
-							<div className='form-group'>
-								<labe>Add-Ons</labe> &nbsp;&nbsp;
-								<textarea name="addOns" cols="83" className='form-controlm' onChange={handleChange} />
-							</div>
-							<div className='form-groupm'>
-							{/* <!--bind the disabled attributes of the button to the value of 'valid' state--> */}
-							<button type='submit' className='btn btn-primary'> Add Plan </button>
-							</div>
-						</form>
-					</div>	
-					<div className='text-danger'></div>
-					<div className='text-success'></div>
-					<div className='text-danger'></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</React.Fragment>
-} 
+  return (
+    <React.Fragment>
+      <h2>Create a new Plan</h2>
+      <Form onSubmit={submit} className='Plan-Form' style={{width: '30rem', alignItems:'center',}}>
+        <Form.Group className="mb-3" >
+          <Form.Label>Plan Value</Form.Label>
+          <Form.Control
+            type="number"
+            name="planValue"
+            value={minVal}
+            onChange={handleChange}
+            required
+          />
+          <Form.Text className="text-danger">{errorMessage}</Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label> Data (20GB/Month)</Form.Label>
+          <Form.Control
+            type="number"
+            name="data"
+            value={minData}
+            onChange={handleChange}
+            required
+          />
+          <Form.Text className="text-danger">{errorMessage}</Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Unlimited Calls</Form.Label> <br />
+          Yes &nbsp;
+          <input
+            name="calls"
+            type="radio"
+            id="yes"
+            onChange={handleChange}
+            required
+          />
+          &nbsp; No &nbsp;
+          <input
+            name="calls"
+            type="radio"
+            id="no"
+            onChange={handleChange}
+            required
+          />
+          <Form.Text></Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>AddOns</Form.Label>
+          <Form.Control
+            name="addOns"
+            as="textarea"
+            style={{ height: "50px", border: "1px solid black" }}
+            className="form-controlm"
+            onChange={handleChange}
+          />
+          <Form.Text></Form.Text>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Submit
+        </Button><br/>
+        <Form.Text className="text-success">{successMessage}</Form.Text>
+        <Form.Text className="text-danger">{errorMessage}</Form.Text>
+      </Form>
+    </React.Fragment>
+  );
+};
+
+export default AddPlan;
