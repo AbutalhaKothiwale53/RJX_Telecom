@@ -1,0 +1,19 @@
+.grid {
+    max-width: 120rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.6rem;
+}
+.card{
+    padding: 2em;
+    background-color: rgb(188, 188, 189);
+    /* background-color: rgb(118, 118, 118); */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: .1rem .4rem;
+
+}
+.card:hover{
+    background-color: rgb(118, 118, 118);
+    /* background-color: rgb(188, 188, 189); */
+    transform: scale(1.06);
+}
