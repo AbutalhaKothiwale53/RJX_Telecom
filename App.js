@@ -1,29 +1,34 @@
-import React from 'react';
-import { BrowserRouter,Link, Route, Routes } from 'react-router-dom';
+import React from 'react'
+import { Container, Navbar, Nav } from 'react-bootstrap';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AddPlan from './AddPlan';
 import ViewPlan from './ViewPlan'; 
 
 function App() {
   return (
+    return (
     <React.Fragment>
-            <BrowserRouter>
-            <div className="container-fluid">
-                <nav className='navbar navbar-expand-lg navbar-light bg-custom'>
-                <span>Telecall Prepaid</span>
-                <ul>
-                    <li><Link to='addPlan'>Add Plan</Link></li>
-                    <li><Link to='viewPlan'>View Plan</Link></li>
-                </ul>
-                </nav>
-                
-                <Routes>
-                    <Route excat path="/" element={<AddPlan />} />
-                <Route path='/AddPlan' element={<AddPlan />} />
-                <Route path='/ViewPlan' element={<ViewPlan />} />
-                </Routes>
-            </div>
-            </BrowserRouter>
-       </React.Fragment>
+      <BrowserRouter>
+
+      <Navbar bg='dark' variant='dark'>
+        <Container>
+          <Nav>
+          <Nav.Link href='/'>Home</Nav.Link> &nbsp;
+          <Nav.Link href='/addPlan' >Add Plan</Nav.Link> &nbsp;
+          <Nav.Link href='/viewPlan' >View Plan</Nav.Link> &nbsp;
+          </Nav>
+        </Container>
+      </Navbar>
+
+      <Routes>
+        <Route excat path='/' element={<AddPlan />} />
+        <Route excat path='/addPlan' element={<AddPlan />} />
+        <Route path='/viewPlan' element={<ViewPlan />}/>
+      </Routes>
+      </BrowserRouter>
+        {/*  */}
+        
+    </React.Fragment>
   );
 }
 
