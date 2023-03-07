@@ -10,7 +10,7 @@ function App() {
     <React.Fragment>
       <BrowserRouter>
 
-      <Navbar bg='dark' variant='dark'>
+      <Navbar bg='dark' variant='dark' sticky='top'>
         <Container>
           <Nav>
           <Nav.Link href='/'>Home</Nav.Link> &nbsp;
