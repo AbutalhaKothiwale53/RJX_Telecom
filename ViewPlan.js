@@ -1,59 +1,50 @@
-import React, {useState, useEffect, UseRef} from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Button, Card } from "react-bootstrap";
+import TeleTalk from "./TeleTalk.css";
 
-const url = "https://localhost:4000/plans";
+const URL = "http://localhost:1200/plans";
+// const URL = "https://jsonplaceholder.typicode.com/posts";
+const ViewPlan = () => {
+    
+    const [planData, setPlanData] = useState([]);
+    const [mandatory, setMandatory] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
-export default function ViewPlan() {
+    useEffect(() => {
+        axios.get(URL)
+        .then((res) => {
+            setPlanData(res.data);
+        })
+        .catch((err) => {
+            setErrorMessage(err.message);
+        });
+    },[]);
+    function deletePlan() {
 
-	const [planDetails, setPlanDetails] = useState();
-	const [errorMessage, setErrorMessage] = useState('');
-	const [successMessage, setSuccessMessage] = useState('');
+    }
+  return (
+    <div >
+        <h2>Plan Details</h2>
+        <div className="grid">
+        
+            {planData.map((plan) => {
+                const {id, planValue, data, calls, addOns} = plan;
+                return (
+                    <Card.Body key={plan.id} className='card'>
+                    <Card.Text>Plan ID: {id}</Card.Text>
+                    <Card.Text>Plan Value: {planValue}</Card.Text>
+                    <Card.Text>Data: {data}</Card.Text>
+                    <Card.Text>Unlimited Calls: {calls}</Card.Text>
+                    <Card.Text>AddOns: {addOns}</Card.Text>
+                    <Button className="btn-danger" type="submit" onClick={deletePlan}>Delete</Button>
+                </Card.Body>
+                )
+            })}
+        </div>
+    </div>
+  )
+}
 
-	const [message] = useState({
-		"ERROR": "Something went wrong",
-		"DELETE_SUCCESS": "Deleted Successfully",  
-	});
-
-	//useEffect can be used if required to fetch the plan details when the component is mounted
-	function fetchDetails() {
-		//axios call be made here for fetching details
-		//success -> set the state planDetails with the response received.
-		//error -> set the error message as "Something went wrong"
-	}
-
-	function remove(id) {
-		//url -> http://localhost:4000/plans/<plan ID>
-		//success -> set the success messgae as "Deleted Successfully"
-		//error -> set the error message as "Something went wrong"
-	}
-
-	return (
-        <React.Fragment>
-            {/*display message based on condition */}
-			<p>{/*display successMessage*/}</p>
-			<p>{/*display errorMessage*/}</p>
-            <h4>Plan Details</h4>
-            <div className="row">
-                <div key='plan.id' className='card'>
-                    <div className='card-body'>
-                    <b>Plan ID: </b>
-                    <span>{/*id */}</span><br/><br/>
-
-                    <b>Plan Value: </b>
-                    <span>{/*value */}</span><br/><br/>
-
-                    <b>Data: </b>
-                    <span>{/*data */}</span><br/><br/>
-
-                    <b>Unlimited Calls: </b>
-                    <span>{/*calls*/}</span><br/><br/>
-
-                    <b>AddOns: </b>
-                    <span>{/*addOns */}</span>
-                    </div>
-                </div>
-                <button type='submit' >Delete</button>
-            </div>
-        </React.Fragment>
-	);
-}  
+export default ViewPlan
