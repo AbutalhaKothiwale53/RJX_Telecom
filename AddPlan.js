@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
-import TeleTalk from './TeleTalk.css';
 
 const URL = "http://localhost:1200/plans";
 
@@ -28,32 +27,22 @@ const AddPlan = () => {
 
   function submit(e) {
     e.preventDefault();
-    // if(!planData.planValue || !planData.data || !planData.calls || !planData.addOns){
-    //   setMandatory(true);
-    // }
-    if(planData.planValue === "" || planData.data === "" || planData.calls === "" || planData.addOns === ""){
-      setMandatory(message.MANDATORY);
-      setValid(valid);
+      if(planData.planValue !== valid && planData.data !== valid && planData.calls !== valid && planData.addOns !== valid){
+      setMandatory(!mandatory);
+      axios.post(URL, planData)
+      .then(res => {
+        // setPlanData(res.data);
+        setSuccessMessage(`New Plan has been added with the id ${res.data.id}`);
+
+      })
+      .catch(err => {
+        setErrorMessage(message.ERROR);
+      })
     }else{
-      setErrorMessage("");
-      setValid(false);
-      let newPlans = {
-        planValue: planData.planValue,
-        data: planData.data,
-        calls: planData.calls,
-        addOns: planData.addOns
-      }
-      axios.post(URL, newPlans)
-      .then((res) => {
-        setPlanData([...planData, res.data]);
-        setSuccessMessage(`New Plan has been added with the id ${res.data.id} `);
-        setPlanData("");
-        console.log('=>', planData)
-      })
-      .catch((err) => {
-        setErrorMessage(err.message);
-      })
+      setValid(valid);
+      setErrorMessage(message.MANDATORY);
     }
+    setPlanData("");
   }
 
   function handleChange(e) {
@@ -63,28 +52,25 @@ const AddPlan = () => {
     let { name, value } = e.target;
     setPlanData({ ...planData, [name]: value });
 
+
     //set the details state
 		switch(name) {
-			case "planValue":
-        setMinVal(value);
-        if(minVal > 200){
-          setValid(true);
-          setPlanData(value);
+      case "planValue":
+        if(value >= 200){
+          setMinVal(value);
         }else{
           setErrorMessage(message.PLANVALUE_ERROR);
         }
-			break;
-
-      case "data":
-        setMinData(value);
-        if(minData > 20){
-          setValid(true);
-          setPlanData(value);
-        }else{
-          setErrorMessage(message.DATA_ERROR);
-        }
       break;
 
+      case "data":
+        if(value >= 20){
+          setMinData(value);
+        }else{
+          setErrorMessage(message.DATA_ERROR);
+        }     
+      break;
+      
       default:
       break;  
 		}
@@ -133,8 +119,8 @@ const AddPlan = () => {
             id="no"
             onChange={handleChange}
             required
-          />
-          <Form.Text></Form.Text>
+          /><br/>
+          {/* <Form.Text className="text-danger">{errorMessage}</Form.Text> */}
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>AddOns</Form.Label>
@@ -144,8 +130,9 @@ const AddPlan = () => {
             style={{ height: "50px", border: "1px solid black" }}
             className="form-controlm"
             onChange={handleChange}
-          />
-          <Form.Text></Form.Text>
+            required
+          /><br/>
+          {/* <Form.Text className="text-danger">{errorMessage}</Form.Text> */}
         </Form.Group>
 
         <Button variant="primary" type="submit">
