@@ -5,14 +5,22 @@ the server file in named as db.json and to run it use below command
 npx json-server --watch db.json --port 1200
 
 AddPlan.js
-1. The data is posting but after sending the data to JSON server, error message is popping as planData not Itter able. 
-2. Same error message is displaying all over the fields, need to solve that too.
-3. Success Message is not displaying.
-4. Yes / No radio button is sending wrong data, condition needs to be added
+* On successful submission, the success message should be displayed as shown below (below Add Plan button)
+Plan Created successfully with id 1001
+* In case of any error in submission, error message should be as shown below
+Something went wrong
+
 
 ViewPlan.js
-1. Data is fetching successfully.
-2. Delete functionality is yet to be implement.
-3. Unlimited calls has bugs as it should display yes or no but that data displaying is on, need to fix this bug.
+* On click of 'Delete' button from the above view, the corresponding plan details should be from the database.
+* After the successful deletion, "success mesage" should be displayed along with the available plan cards.
+* if there is any error in deleting the plan cards, then error message should be displayed.
+
+Bugs
+1. Same error message is displaying all over the fields
+2. Yes / No radio button is sending wrong data, condition needs to be added
+3. Form validation needs to be done.
+
+
 
 run this command to host DB [ npx json-server --watch db.json --port 1200 ]
