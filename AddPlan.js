@@ -12,34 +12,41 @@ const AddPlan = () => {
     addOns: "",
   });
   const [formsErros, setFormsErrors] = useState({planValue: '', data: ''});
-	const [successMessage, setSuccessMessage] = useState("");
-	const [errorMessage, setErrorMessage] = useState("");
-	const [mandatory, setMandatory] = useState(false);
-	const [valid, setValid] = useState(true);
-	const [minVal, setMinVal] = useState(200);
-	const [minData, setMinData] = useState(20);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [mandatory, setMandatory] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [minVal, setMinVal] = useState(200);
+  const [minData, setMinData] = useState(20);
   const [message] = useState({
-		"MANDATORY": "Enter all the forms fields",
-		"ERROR": "Something went wrong",
-		"PLANVALUE_ERROR": "Plan value cannot be less than 200",
-		"DATA_ERROR": "Data should be 20GB or more",
-	});
+    MANDATORY: "Enter all the forms fields",
+    ERROR: "Something went wrong",
+    PLANVALUE_ERROR: "Plan value cannot be less than 200",
+    DATA_ERROR: "Data should be 20GB or more",
+  });
 
   function submit(e) {
     e.preventDefault();
-      if(planData.planValue !== valid && planData.data !== valid && planData.calls !== valid && planData.addOns !== valid){
+    if (
+      planData.planValue !== valid &&
+      planData.data !== valid &&
+      planData.calls !== valid &&
+      planData.addOns !== valid
+    ) {
       setMandatory(!mandatory);
-      axios.post(URL, planData)
-      .then(res => {
-        // setPlanData(res.data);
-        setSuccessMessage(`New Plan has been added with the id ${res.data.id}`);
-
-      })
-      .catch(err => {
-        setErrorMessage(message.ERROR);
-      })
-    }else{
-      setValid(valid);
+      axios
+        .post(URL, planData)
+        .then((res) => {
+          // setPlanData(res.data);
+          setSuccessMessage(
+            `New Plan has been added with the id ${res.data.id}`
+          );
+        })
+        .catch((err) => {
+          setErrorMessage(message.ERROR);
+        });
+    } else {
+      setValid(!valid);
       setErrorMessage(message.MANDATORY);
     }
     setPlanData("");
@@ -47,40 +54,45 @@ const AddPlan = () => {
 
   function handleChange(e) {
     setSuccessMessage("");
-		setErrorMessage("");
-		setMandatory("");
+    setErrorMessage("");
+    setMandatory("");
     let { name, value } = e.target;
     setPlanData({ ...planData, [name]: value });
 
-
     //set the details state
-		switch(name) {
+    switch (name) {
       case "planValue":
-        if(value >= 200){
+        setMinVal(value);
+        if (value >= minVal) {
           setMinVal(value);
-        }else{
+        } else {
           setErrorMessage(message.PLANVALUE_ERROR);
         }
-      break;
+        break;
 
       case "data":
-        if(value >= 20){
+        setMinData(value);
+        if (value >= minData) {
           setMinData(value);
-        }else{
+        } else {
           setErrorMessage(message.DATA_ERROR);
-        }     
-      break;
-      
+        }
+        break;
+
       default:
-      break;  
-		}
+        break;
+    }
   }
 
   return (
     <React.Fragment>
       <h2>Create a new Plan</h2>
-      <Form onSubmit={submit} className='Plan-Form' style={{width: '30rem', alignItems:'center',}}>
-        <Form.Group className="mb-3" >
+      <Form
+        onSubmit={submit}
+        className="Plan-Form"
+        style={{ width: "30rem", alignItems: "center" }}
+      >
+        <Form.Group className="mb-3">
           <Form.Label>Plan Value</Form.Label>
           <Form.Control
             type="number"
@@ -119,7 +131,8 @@ const AddPlan = () => {
             id="no"
             onChange={handleChange}
             required
-          /><br/>
+          />
+          <br />
           {/* <Form.Text className="text-danger">{errorMessage}</Form.Text> */}
         </Form.Group>
         <Form.Group className="mb-3">
@@ -131,13 +144,15 @@ const AddPlan = () => {
             className="form-controlm"
             onChange={handleChange}
             required
-          /><br/>
+          />
+          <br />
           {/* <Form.Text className="text-danger">{errorMessage}</Form.Text> */}
         </Form.Group>
 
         <Button variant="primary" type="submit">
           Submit
-        </Button><br/>
+        </Button>
+        <br />
         <Form.Text className="text-success">{successMessage}</Form.Text>
         <Form.Text className="text-danger">{errorMessage}</Form.Text>
       </Form>
